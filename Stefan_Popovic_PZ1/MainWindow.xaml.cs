@@ -17,7 +17,7 @@ using System.Xml;
 using System.Windows.Media.Media3D;
 using Microsoft.Win32;
 using System.Xml.Linq;
-
+using System.Windows.Media.Animation;
 
 namespace Stefan_Popovic_PZ1
 {
@@ -56,8 +56,8 @@ namespace Stefan_Popovic_PZ1
         SolidColorBrush colorStart = Brushes.Yellow;
         SolidColorBrush colorEnd = Brushes.Yellow;
         bool clicked = false;
-        string helperA;
-        string helperB;
+        string helperA ="////";
+        string helperB = "////";
 
         private List<SubstationEntity> substationEntities = new List<SubstationEntity>();
         private List<NodeEntity> nodeEntities = new List<NodeEntity>();
@@ -2031,99 +2031,77 @@ namespace Stefan_Popovic_PZ1
 
         private void Linija_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!clicked)
+            TransformGroup transformGroup = new TransformGroup();
+            ScaleTransform scaleTransform = new ScaleTransform();
+            transformGroup.Children.Add(scaleTransform);
+            DoubleAnimation myAnimation = new DoubleAnimation();
+            myAnimation.From = 1;
+            myAnimation.To = 2;
+            myAnimation.AutoReverse = true;
+            myAnimation.Duration = new Duration(TimeSpan.FromSeconds(1));
+
+            Line linija = (Line)sender;
+            string[] data = linija.ToolTip.ToString().Split('\n');
+            var start = data[2].Replace(" ","").Split(':')[1];
+            var end = data[3].Replace(" ", "").Split(':')[1];
+
+            Ellipse newElipse1 = ellipses.Find(x => x.ToolTip.ToString().Contains(start));  //novi
+            Ellipse newElipse2 = ellipses.Find(x => x.ToolTip.ToString().Contains(end));
+            Ellipse oldElipse1 = ellipses.Find(x => x.ToolTip.ToString().Contains(helperA));  //stari
+            Ellipse oldElipse2 = ellipses.Find(x => x.ToolTip.ToString().Contains(helperB));
+
+            if(newElipse1 != null && newElipse1.Fill == Brushes.Yellow && start==helperA) //odcekiraj kliknuo sam na isti koji je zut
             {
-                Line linija = (Line)sender;
-                string[] data = linija.ToolTip.ToString().Split('\n');
-                var start = data[2].Replace(" ","").Split(':')[1];
-                var end = data[3].Replace(" ", "").Split(':')[1];
-                helperA = start;
-                helperB = end;
-
-
-                Ellipse newElipse1 = ellipses.Find(x=> x.ToolTip.ToString().Contains(start));
-                Ellipse newElipse2 = ellipses.Find(x => x.ToolTip.ToString().Contains(end));
-                if(newElipse1 != null)
+                newElipse1.Fill = colorStart;
+                newElipse1.StrokeThickness = 1;
+            }
+            if (newElipse2 != null && newElipse2.Fill == Brushes.Yellow && end == helperB)
+            {
+                newElipse2.Fill = colorEnd;
+                newElipse2.StrokeThickness = 1;
+            }
+            if (newElipse1 !=null && newElipse1.Fill != Brushes.Yellow && start != helperA) //cekiraj novi
+            {
+                if(oldElipse1 != null && oldElipse1.Fill != Brushes.Yellow)
                 {
-                    colorStart = (SolidColorBrush)newElipse1.Fill;
-                    newElipse1.Fill = Brushes.Yellow;
-                    newElipse1.Stroke = Brushes.Black;
-                    newElipse1.StrokeThickness = 2;
+                    oldElipse1.Fill = colorStart;
+                    oldElipse1.StrokeThickness = 1;
                 }
-                if (newElipse2 != null)
+                colorEnd = (SolidColorBrush)newElipse1.Fill;
+                newElipse1.Fill = Brushes.Yellow;
+                newElipse1.StrokeThickness = 2;
+                newElipse1.RenderTransformOrigin = new System.Windows.Point(0.5, 0.5);
+                newElipse1.RenderTransform = transformGroup;
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, myAnimation);
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, myAnimation);
+
+            }
+            if (newElipse2 != null && newElipse2.Fill != Brushes.Yellow && end != helperB)
+            {
+                if (oldElipse2 != null && oldElipse2.Fill != Brushes.Yellow)
                 {
-                    colorEnd = (SolidColorBrush)newElipse2.Fill;
-                    newElipse2.Fill = Brushes.Yellow;
-                    newElipse2.Stroke = Brushes.Black;
-                    newElipse2.StrokeThickness = 2;
+                    oldElipse2.Fill = colorEnd;
+                    oldElipse2.StrokeThickness = 1;
                 }
-                
-                clicked = true;
+                colorEnd = (SolidColorBrush)newElipse2.Fill;
+                newElipse2.Fill = Brushes.Yellow;
+                newElipse2.StrokeThickness = 2;
+                newElipse2.RenderTransformOrigin = new System.Windows.Point(0.5, 0.5);
+                newElipse2.RenderTransform = transformGroup;
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, myAnimation);
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, myAnimation);
+            }
+            if(end==helperB && start==helperA && newElipse1 != null && newElipse2 !=null)
+            {
+                helperA = "////";
+                helperB = "/////";
             }
             else
             {
-                Line linija = (Line)sender;
-                string[] data = linija.ToolTip.ToString().Split('\n');
-                var start = data[2].Replace(" ", "").Split(':')[1];
-                var end = data[3].Replace(" ", "").Split(':')[1];
-
-                Ellipse newElipse1 = ellipses.Find(x => x.ToolTip.ToString().Contains(start));  //novi
-                Ellipse newElipse2 = ellipses.Find(x => x.ToolTip.ToString().Contains(end));
-                Ellipse oldElipse1 = ellipses.Find(x => x.ToolTip.ToString().Contains(helperA));  //stari
-                Ellipse oldElipse2 = ellipses.Find(x => x.ToolTip.ToString().Contains(helperB));
-
-                if (helperA == start && helperB == end)  //ako su isti kao malopre ugasi
-                {
-                    if (newElipse1 != null)
-                    {
-                        newElipse1.Fill = colorStart;
-                        newElipse1.Stroke = Brushes.Black;
-                        newElipse1.StrokeThickness = 1;
-                    }
-                    if (newElipse2 != null)
-                    {
-                        newElipse2.Fill = colorEnd;
-                        newElipse2.Stroke = Brushes.Black;
-                        newElipse2.StrokeThickness = 1;
-                    }
-                    clicked = false;
-                }
-                else
-                {
-                    if (oldElipse1 != null && oldElipse1.Fill==Brushes.Yellow)
-                    {
-                        oldElipse1.Fill = colorStart;
-                        oldElipse1.Stroke = Brushes.Black;
-                        oldElipse1.StrokeThickness = 1;
-                    }
-                    if (oldElipse2 != null && oldElipse2.Fill == Brushes.Yellow)
-                    {
-
-                        oldElipse2.Fill = colorEnd;
-                        oldElipse2.Stroke = Brushes.Black;
-                        oldElipse2.StrokeThickness = 1;
-                    }
-                    if (newElipse1 != null && newElipse1.Fill != Brushes.Yellow)
-                    {
-                        colorStart = (SolidColorBrush)newElipse1.Fill;
-                        newElipse1.Fill = Brushes.Yellow;
-                        newElipse1.Stroke = Brushes.Black;
-                        newElipse1.StrokeThickness = 2;
-                    }
-                    if (newElipse2 != null && newElipse2.Fill != Brushes.Yellow)
-                    {
-                        colorEnd = (SolidColorBrush)newElipse2.Fill;
-                        newElipse2.Fill = Brushes.Yellow;
-                        newElipse2.Stroke = Brushes.Black;
-                        newElipse2.StrokeThickness = 2;
-                    }
-                    if (newElipse1 != null || newElipse2 != null)
-                        clicked = true;
-                    else
-                        clicked = false;
-                }
-
+                helperA = start;
+                helperB = end;
             }
+
 
         }
     }
