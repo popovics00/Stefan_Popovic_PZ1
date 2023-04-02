@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using System.Windows.Media.Media3D;
 using Microsoft.Win32;
+using System.Xml.Linq;
 
 
 namespace Stefan_Popovic_PZ1
@@ -1374,6 +1375,7 @@ namespace Stefan_Popovic_PZ1
             foreach (var item in list)
             {
                 item.ToolTip = "";
+                item.MouseRightButtonDown += Linija_MouseRightButtonDown;
             }
 
             List<ContextMenu> menu = new List<ContextMenu>();
@@ -1402,7 +1404,6 @@ namespace Stefan_Popovic_PZ1
                 menu[2].Items.Add(m1);
                 menu[3].Items.Add(m2);
             }
-
             else if (Lines2[param.Id.Item1, param.Id.Item2].Paint == positionLook.straight)
             {
                 list[0].ToolTip += Lines3[param.Id.Item1, param.Id.Item2].listId[1].ToString() + "\n";
@@ -1530,7 +1531,6 @@ namespace Stefan_Popovic_PZ1
                 menu[0].Items.Add(m1);
                 menu[1].Items.Add(m2);
             }
-
             else if (Lines3[param.Id.Item1, param.Id.Item2].Paint1 == positionLook.Lposition)
             {
                 list[0].ToolTip += Lines3[param.Id.Item1, param.Id.Item2].listId[0].ToString() + "\n";
@@ -1549,7 +1549,6 @@ namespace Stefan_Popovic_PZ1
                 menu[0].Items.Add(m1);
                 menu[3].Items.Add(m2);
             }
-
             else if (Lines3[param.Id.Item1, param.Id.Item2].Paint1 == positionLook.othersideL)
             {
                 list[0].ToolTip += Lines3[param.Id.Item1, param.Id.Item2].listId[0].ToString() + "\n";
@@ -1568,7 +1567,6 @@ namespace Stefan_Popovic_PZ1
                 menu[2].Items.Add(m1);
                 menu[0].Items.Add(m2);
             }
-
             else if (Lines3[param.Id.Item1, param.Id.Item2].Paint1 == positionLook.upsidedownL)
             {
                 list[1].ToolTip += Lines3[param.Id.Item1, param.Id.Item2].listId[0].ToString() + "\n";
@@ -1587,7 +1585,6 @@ namespace Stefan_Popovic_PZ1
                 menu[1].Items.Add(m1);
                 menu[3].Items.Add(m2);
             }
-
             else if (Lines3[param.Id.Item1, param.Id.Item2].Paint1 == positionLook.totalRotL)
             {
                 list[1].ToolTip += Lines3[param.Id.Item1, param.Id.Item2].listId[0].ToString() + "\n";
@@ -1963,5 +1960,101 @@ namespace Stefan_Popovic_PZ1
             }
         }
         #endregion
+
+
+        private void Linija_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!clicked)
+            {
+                Polyline linija = (Polyline)sender;
+                string[] data = linija.ToolTip.ToString().Split(',');
+                helperA = long.Parse(data[2]);
+                helperB = long.Parse(data[3]);
+
+
+                Ellipse ee = pairs[helperA];
+                Ellipse ee1 = pairs[helperB];
+
+                if (ee.ToolTip.ToString().Contains("TSH"))
+                {
+                    element = Element.Substation;
+                }
+                if (ee.ToolTip.ToString().Contains("BUSNODE"))
+                {
+                    element = Element.Node;
+                }
+                if (ee.ToolTip.ToString().Contains("disconn") || ee.ToolTip.ToString().Contains("loadbreaker"))
+                {
+                    element = Element.Switch;
+                }
+
+                if (ee1.ToolTip.ToString().Contains("TSH"))
+                {
+                    element1 = Element.Substation;
+                }
+                if (ee1.ToolTip.ToString().Contains("BUSNODE"))
+                {
+                    element1 = Element.Node;
+                }
+                if (ee1.ToolTip.ToString().Contains("disconn") || ee1.ToolTip.ToString().Contains("loadbreaker"))
+                {
+                    element1 = Element.Switch;
+                }
+                ee.Fill = Brushes.Azure;
+                ee1.Fill = Brushes.Azure;
+
+                canvas.Children.Remove(ee);
+                canvas.Children.Remove(ee1);
+
+                canvas.Children.Add(ee);
+                canvas.Children.Add(ee1);
+                clicked = true;
+            }
+            else
+            {
+                Polyline linija = (Polyline)sender;
+                string[] data = linija.ToolTip.ToString().Split(',');
+                helperA = long.Parse(data[2]);
+                helperB = long.Parse(data[3]);
+
+                Ellipse ee = pairs[helperA];
+                Ellipse ee1 = pairs[helperB];
+
+                if (element == Element.Switch)
+                {
+                    ee.Fill = Brushes.Black;
+                }
+                if (element == Element.Node)
+                {
+                    ee.Fill = Brushes.Chocolate;
+                }
+                if (element == Element.Substation)
+                {
+                    ee.Fill = Brushes.Blue;
+                }
+
+                if (element1 == Element.Switch)
+                {
+                    ee1.Fill = Brushes.Black;
+                }
+                if (element1 == Element.Node)
+                {
+                    ee1.Fill = Brushes.Chocolate;
+                }
+                if (element1 == Element.Substation)
+                {
+                    ee1.Fill = Brushes.Blue;
+                }
+
+
+                canvas.Children.Remove(ee);
+                canvas.Children.Remove(ee1);
+
+                canvas.Children.Add(ee);
+                canvas.Children.Add(ee1);
+                clicked = false;
+            }
+
+        }
     }
 }
