@@ -2090,37 +2090,37 @@ namespace Stefan_Popovic_PZ1
                 }
                 else
                 {
-                    if (oldElipse1 != null)
+                    if (oldElipse1 != null && oldElipse1.Fill==Brushes.Yellow)
                     {
                         oldElipse1.Fill = colorStart;
                         oldElipse1.Stroke = Brushes.Black;
                         oldElipse1.StrokeThickness = 1;
-                        clicked = false;
                     }
-                    if (oldElipse2 != null)
+                    if (oldElipse2 != null && oldElipse2.Fill == Brushes.Yellow)
                     {
 
                         oldElipse2.Fill = colorEnd;
                         oldElipse2.Stroke = Brushes.Black;
                         oldElipse2.StrokeThickness = 1;
-                        clicked = false;
                     }
-                    if (newElipse1 != null)
+                    if (newElipse1 != null && newElipse1.Fill != Brushes.Yellow)
                     {
                         colorStart = (SolidColorBrush)newElipse1.Fill;
                         newElipse1.Fill = Brushes.Yellow;
                         newElipse1.Stroke = Brushes.Black;
                         newElipse1.StrokeThickness = 2;
-                        clicked = true;
                     }
-                    if (newElipse2 != null)
+                    if (newElipse2 != null && newElipse2.Fill != Brushes.Yellow)
                     {
                         colorEnd = (SolidColorBrush)newElipse2.Fill;
                         newElipse2.Fill = Brushes.Yellow;
                         newElipse2.Stroke = Brushes.Black;
                         newElipse2.StrokeThickness = 2;
-                        clicked = true;
                     }
+                    if (newElipse1 != null || newElipse2 != null)
+                        clicked = true;
+                    else
+                        clicked = false;
                 }
 
             }
