@@ -2050,39 +2050,35 @@ namespace Stefan_Popovic_PZ1
             Ellipse oldElipse1 = ellipses.Find(x => x.ToolTip.ToString().Contains(helperA));  //stari
             Ellipse oldElipse2 = ellipses.Find(x => x.ToolTip.ToString().Contains(helperB));
 
-            if(newElipse1 != null && newElipse1.Fill == Brushes.Yellow && start==helperA) //odcekiraj kliknuo sam na isti koji je zut
+            if (oldElipse1 != null)
             {
-                newElipse1.Fill = colorStart;
-                newElipse1.StrokeThickness = 1;
+                oldElipse1.Fill = colorStart;
+                oldElipse1.StrokeThickness = 1;
             }
-            if (newElipse2 != null && newElipse2.Fill == Brushes.Yellow && end == helperB)
+            if (oldElipse2 != null)
             {
-                newElipse2.Fill = colorEnd;
-                newElipse2.StrokeThickness = 1;
+                oldElipse2.Fill = colorEnd;
+                oldElipse2.StrokeThickness = 1;
             }
-            if (newElipse1 !=null && newElipse1.Fill != Brushes.Yellow && start != helperA) //cekiraj novi
+
+            if (newElipse1 != null && newElipse1.Fill != Brushes.Yellow && colorEnd != null) //odcekiraj kliknuo sam na isti koji je zut
             {
-                if(oldElipse1 != null && oldElipse1.Fill != Brushes.Yellow)
-                {
-                    oldElipse1.Fill = colorStart;
-                    oldElipse1.StrokeThickness = 1;
-                }
-                colorEnd = (SolidColorBrush)newElipse1.Fill;
+                colorStart = (SolidColorBrush)newElipse1.Fill;
                 newElipse1.Fill = Brushes.Yellow;
                 newElipse1.StrokeThickness = 2;
                 newElipse1.RenderTransformOrigin = new System.Windows.Point(0.5, 0.5);
                 newElipse1.RenderTransform = transformGroup;
                 scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, myAnimation);
                 scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, myAnimation);
-
+                helperA = start;
             }
-            if (newElipse2 != null && newElipse2.Fill != Brushes.Yellow && end != helperB)
+            else
             {
-                if (oldElipse2 != null && oldElipse2.Fill != Brushes.Yellow)
-                {
-                    oldElipse2.Fill = colorEnd;
-                    oldElipse2.StrokeThickness = 1;
-                }
+                //colorStart = null;
+                helperA = "////";
+            }
+            if (newElipse2 != null && newElipse2.Fill != Brushes.Yellow && colorStart != null) //odcekiraj kliknuo sam na isti koji je zut
+            {
                 colorEnd = (SolidColorBrush)newElipse2.Fill;
                 newElipse2.Fill = Brushes.Yellow;
                 newElipse2.StrokeThickness = 2;
@@ -2090,17 +2086,14 @@ namespace Stefan_Popovic_PZ1
                 newElipse2.RenderTransform = transformGroup;
                 scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, myAnimation);
                 scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, myAnimation);
-            }
-            if(end==helperB && start==helperA && newElipse1 != null && newElipse2 !=null)
-            {
-                helperA = "////";
-                helperB = "/////";
+                helperB = end;
             }
             else
             {
-                helperA = start;
-                helperB = end;
+                //colorStart = null;
+                helperB = "////";
             }
+
 
 
         }
