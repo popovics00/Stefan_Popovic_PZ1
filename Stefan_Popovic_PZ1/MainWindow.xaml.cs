@@ -1044,6 +1044,7 @@ namespace Stefan_Popovic_PZ1
                         line1.X2 = j * 6 + 3;
                         line1.Y1 = (299 - i) * 6 - 0.1;
                         line1.Y2 = (299 - i) * 6 + 3.1;
+                        
 
                         Line line2 = new Line();
                         line2.StrokeThickness = 0.4;
@@ -1719,7 +1720,7 @@ namespace Stefan_Popovic_PZ1
                     ellipseObj.Stroke = EllipseWindow.borderColor;
                     ellipseObj.Fill = EllipseWindow.fillColor;
                     ellipseObj.MouseLeftButtonDown += Ellipse_MouseLeftButtonDown;
-
+                    ellipseObj.Opacity = EllipseWindow.opacity;
                     Canvas.SetTop(ellipseObj, points[0].Y - this.Menu.ActualHeight);
                     Canvas.SetLeft(ellipseObj, points[0].X);
                     Canvass.Children.Add(ellipseObj);
@@ -1851,6 +1852,7 @@ namespace Stefan_Popovic_PZ1
 
                 ellipseObj.Fill = EllipseWindow.fillColor;
                 ellipseObj.Stroke = EllipseWindow.borderColor;
+                ellipseObj.Opacity = EllipseWindow.opacity;
                 ellipseObj.StrokeThickness = EllipseWindow.borderThickness;
             }
         }

@@ -71,6 +71,7 @@ namespace Stefan_Popovic_PZ1
         public static int x = 0;
         public static int y = 0;
         public static int borderThickness = 0;
+        public static double opacity = 1;
         public static SolidColorBrush borderColor;
         public static SolidColorBrush fillColor;
 
@@ -84,7 +85,7 @@ namespace Stefan_Popovic_PZ1
             x = Int32.Parse(xValue.Text);
             y = Int32.Parse(yValue.Text);
             borderThickness = Int32.Parse(thickValue.Text);
-
+            opacity = transparency.Value;
             if (cbFillColor.SelectedIndex == 0)
                 fillColor = Brushes.Red;
             else if (cbFillColor.SelectedIndex == 1)
