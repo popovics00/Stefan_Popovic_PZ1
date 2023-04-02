@@ -1,0 +1,30 @@
+﻿<Window x:Class="Stefan_Popovic_PZ1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Stefan_Popovic_PZ1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="1800" Width="1800">
+    <Grid>
+        <DockPanel>
+            <Menu x:Name="Menu" DockPanel.Dock="Top">
+                <MenuItem x:Name="DrawEllipse" Header="Ellipse" Canvas.Left="3" VerticalAlignment="Center" Click="DrawEllipse_Click"/>
+                <MenuItem x:Name="DrawPolygon" Header="Polygon" Canvas.Left="50" VerticalAlignment="Center" Click="DrawPolygon_Click"/>
+                <MenuItem x:Name="AddText" Header="Add text" Canvas.Left="105" VerticalAlignment="Center" Click="AddText_Click"/>
+                <MenuItem x:Name="Undo" Header="Undo" Canvas.Left="160" VerticalAlignment="Center" Click="Undo_Click"/>
+                <MenuItem x:Name="Redo" Header="Redo" Canvas.Left="200" VerticalAlignment="Center" Click="Redo_Click"/>
+                <MenuItem x:Name="Clear" Header="Clear" Canvas.Left="240" VerticalAlignment="Center" Click="Clear_Click"/>
+            </Menu>
+            <Slider x:Name="slider" Value="1" DockPanel.Dock="Top" Minimum=".1" Maximum="20"/>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MouseLeftButtonUp="Canvass_MouseLeftButtonDown"  MouseRightButtonDown="Canvass_MouseRightButtonDown">
+                <Canvas x:Name="Canvass" Background="AliceBlue" Width="1800" Height="1800" RenderTransformOrigin="0.457,0.5">
+                    <Canvas.LayoutTransform>
+                        <ScaleTransform ScaleX="{Binding ElementName=slider, Path=Value}" ScaleY="{Binding ElementName=slider, Path=Value}"/>
+                    </Canvas.LayoutTransform>
+                </Canvas>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</Window>

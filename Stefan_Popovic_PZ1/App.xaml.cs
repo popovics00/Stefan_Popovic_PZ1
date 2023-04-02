@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace Dejana_Vujadinovic_PZ1
+namespace Stefan_Popovic_PZ1
 {
     /// <summary>
     /// Interaction logic for App.xaml
