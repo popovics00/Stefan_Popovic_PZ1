@@ -53,6 +53,11 @@ namespace Stefan_Popovic_PZ1
 
         #region promenljive
         public double noviX, noviY;
+        SolidColorBrush colorStart = Brushes.Yellow;
+        SolidColorBrush colorEnd = Brushes.Yellow;
+        bool clicked = false;
+        string helperA;
+        string helperB;
 
         private List<SubstationEntity> substationEntities = new List<SubstationEntity>();
         private List<NodeEntity> nodeEntities = new List<NodeEntity>();
@@ -1102,10 +1107,18 @@ namespace Stefan_Popovic_PZ1
                             {
                                 toolTip += "Id: " + item1.ToString() + "\n";
                                 toolTip += "Name: " + AddNameLines(item1) + "\n";
+                                toolTip += "Start: " + addStartOfLine(item1) + "\n";
+                                toolTip += "End: " + addEndOfLine(item1) + "\n";
+
                             }
 
                             line3.ToolTip = toolTip;
                             line4.ToolTip = toolTip;
+                            line3.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line4.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line3.MouseLeftButtonDown += Linija_MouseRightButtonDown;
+                            line4.MouseLeftButtonDown += Linija_MouseRightButtonDown;
+
 
                             ContextMenu menu = new ContextMenu();
 
@@ -1130,9 +1143,15 @@ namespace Stefan_Popovic_PZ1
                             {
                                 toolTip += "Id: " + item1.ToString() + "\n";
                                 toolTip += "Name: " + AddNameLines(item1) + "\n";
+                                toolTip += "Start: " + addStartOfLine(item1) + "\n";
+                                toolTip += "End: " + addEndOfLine(item1) + "\n";
                             }
                             line1.ToolTip = toolTip;
                             line2.ToolTip = toolTip;
+                            line1.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line2.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line1.MouseLeftButtonDown += Linija_MouseRightButtonDown;
+                            line2.MouseLeftButtonDown += Linija_MouseRightButtonDown;
                             ContextMenu menu = new ContextMenu();
 
                             foreach (var item1 in Lines3[i, j].listId)
@@ -1154,10 +1173,16 @@ namespace Stefan_Popovic_PZ1
                             {
                                 toolTip += "Id: " + item.ToString() + "\n";
                                 toolTip += "Name: " + AddNameLines(item) + "\n";
+                                toolTip += "Start: " + addStartOfLine(item) + "\n";
+                                toolTip += "End: " + addEndOfLine(item) + "\n";
                             }
 
                             line1.ToolTip = toolTip;
                             line4.ToolTip = toolTip;
+                            line1.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line4.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line1.MouseLeftButtonDown += Linija_MouseRightButtonDown;
+                            line4.MouseLeftButtonDown += Linija_MouseRightButtonDown;
                             ContextMenu menu = new ContextMenu();
 
                             foreach (var item1 in Lines3[i, j].listId)
@@ -1181,10 +1206,16 @@ namespace Stefan_Popovic_PZ1
                             {
                                 toolTip += "Id: " + item1.ToString() + "\n";
                                 toolTip += "Name: " + AddNameLines(item1) + "\n";
+                                toolTip += "Start: " + addStartOfLine(item1) + "\n";
+                                toolTip += "End: " + addEndOfLine(item1) + "\n";
                             }
 
                             line1.ToolTip = toolTip;
                             line3.ToolTip = toolTip;
+                            line1.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line3.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line1.MouseLeftButtonDown += Linija_MouseRightButtonDown;
+                            line3.MouseLeftButtonDown += Linija_MouseRightButtonDown;
 
                             ContextMenu menu = new ContextMenu();
 
@@ -1210,9 +1241,15 @@ namespace Stefan_Popovic_PZ1
                             {
                                 toolTip += "Id: " + item1.ToString() + "\n";
                                 toolTip += "Name: " + AddNameLines(item1) + "\n";
+                                toolTip += "Start: " + addStartOfLine(item1) + "\n";
+                                toolTip += "End: " + addEndOfLine(item1) + "\n";
                             }
                             line2.ToolTip = toolTip;
                             line4.ToolTip = toolTip;
+                            line2.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line4.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line2.MouseLeftButtonDown += Linija_MouseRightButtonDown;
+                            line4.MouseLeftButtonDown += Linija_MouseRightButtonDown;
 
                             ContextMenu menu = new ContextMenu();
                             foreach (var item in Lines3[i, j].listId)
@@ -1236,10 +1273,16 @@ namespace Stefan_Popovic_PZ1
                             {
                                 toolTip += "Id: " + item.ToString() + "\n";
                                 toolTip += "Name: " + AddNameLines(item) + "\n";
+                                toolTip += "Start: " + addStartOfLine(item) + "\n";
+                                toolTip += "End: " + addEndOfLine(item) + "\n";
                             }
 
                             line2.ToolTip = toolTip;
                             line3.ToolTip = toolTip;
+                            line2.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line3.MouseRightButtonDown += Linija_MouseRightButtonDown;
+                            line2.MouseLeftButtonDown += Linija_MouseRightButtonDown;
+                            line3.MouseLeftButtonDown += Linija_MouseRightButtonDown;
 
                             ContextMenu menu = new ContextMenu();
 
@@ -1287,7 +1330,6 @@ namespace Stefan_Popovic_PZ1
 
                             Canvass.Children.Add(el1);
                         }
-
                         else if (Lines3[i, j].Paint == positionLook.clockwise90T)
                         {
                             List1 = LineTooltip(Lines[i, j], List1);
@@ -1298,7 +1340,6 @@ namespace Stefan_Popovic_PZ1
 
                             Canvass.Children.Add(el1);
                         }
-
                         else if (Lines3[i, j].Paint == positionLook.notclockwise90T)
                         {
                             List1 = LineTooltip(Lines[i, j], List1);
@@ -1375,7 +1416,6 @@ namespace Stefan_Popovic_PZ1
             foreach (var item in list)
             {
                 item.ToolTip = "";
-                item.MouseRightButtonDown += Linija_MouseRightButtonDown;
             }
 
             List<ContextMenu> menu = new List<ContextMenu>();
@@ -1627,7 +1667,34 @@ namespace Stefan_Popovic_PZ1
             }
             return LineName;
         }
+        public string addStartOfLine(long id)
+        {
 
+            string lineStart = "";
+            foreach (var item in lineEntities)
+            {
+                if (item.Id == id)
+                {
+                    lineStart = item.FirstEnd.ToString();
+                    break;
+                }
+            }
+            return lineStart;
+        }
+        public string addEndOfLine(long id)
+        {
+
+            string lineEnd = "";
+            foreach (var item in lineEntities)
+            {
+                if (item.Id == id)
+                {
+                    lineEnd = item.SecondEnd.ToString();
+                    break;
+                }
+            }
+            return lineEnd;
+        }
         public static void ToLatLon(double utmX, double utmY, int zoneUTM, out double latitude, out double longitude)
         {
             bool isNorthHemisphere = true;
@@ -1966,93 +2033,96 @@ namespace Stefan_Popovic_PZ1
         {
             if (!clicked)
             {
-                Polyline linija = (Polyline)sender;
-                string[] data = linija.ToolTip.ToString().Split(',');
-                helperA = long.Parse(data[2]);
-                helperB = long.Parse(data[3]);
+                Line linija = (Line)sender;
+                string[] data = linija.ToolTip.ToString().Split('\n');
+                var start = data[2].Replace(" ","").Split(':')[1];
+                var end = data[3].Replace(" ", "").Split(':')[1];
+                helperA = start;
+                helperB = end;
 
 
-                Ellipse ee = pairs[helperA];
-                Ellipse ee1 = pairs[helperB];
-
-                if (ee.ToolTip.ToString().Contains("TSH"))
+                Ellipse newElipse1 = ellipses.Find(x=> x.ToolTip.ToString().Contains(start));
+                Ellipse newElipse2 = ellipses.Find(x => x.ToolTip.ToString().Contains(end));
+                if(newElipse1 != null)
                 {
-                    element = Element.Substation;
+                    colorStart = (SolidColorBrush)newElipse1.Fill;
+                    newElipse1.Fill = Brushes.Yellow;
+                    newElipse1.Stroke = Brushes.Black;
+                    newElipse1.StrokeThickness = 2;
                 }
-                if (ee.ToolTip.ToString().Contains("BUSNODE"))
+                if (newElipse2 != null)
                 {
-                    element = Element.Node;
+                    colorEnd = (SolidColorBrush)newElipse2.Fill;
+                    newElipse2.Fill = Brushes.Yellow;
+                    newElipse2.Stroke = Brushes.Black;
+                    newElipse2.StrokeThickness = 2;
                 }
-                if (ee.ToolTip.ToString().Contains("disconn") || ee.ToolTip.ToString().Contains("loadbreaker"))
-                {
-                    element = Element.Switch;
-                }
-
-                if (ee1.ToolTip.ToString().Contains("TSH"))
-                {
-                    element1 = Element.Substation;
-                }
-                if (ee1.ToolTip.ToString().Contains("BUSNODE"))
-                {
-                    element1 = Element.Node;
-                }
-                if (ee1.ToolTip.ToString().Contains("disconn") || ee1.ToolTip.ToString().Contains("loadbreaker"))
-                {
-                    element1 = Element.Switch;
-                }
-                ee.Fill = Brushes.Azure;
-                ee1.Fill = Brushes.Azure;
-
-                canvas.Children.Remove(ee);
-                canvas.Children.Remove(ee1);
-
-                canvas.Children.Add(ee);
-                canvas.Children.Add(ee1);
+                
                 clicked = true;
             }
             else
             {
-                Polyline linija = (Polyline)sender;
-                string[] data = linija.ToolTip.ToString().Split(',');
-                helperA = long.Parse(data[2]);
-                helperB = long.Parse(data[3]);
+                Line linija = (Line)sender;
+                string[] data = linija.ToolTip.ToString().Split('\n');
+                var start = data[2].Replace(" ", "").Split(':')[1];
+                var end = data[3].Replace(" ", "").Split(':')[1];
 
-                Ellipse ee = pairs[helperA];
-                Ellipse ee1 = pairs[helperB];
+                Ellipse newElipse1 = ellipses.Find(x => x.ToolTip.ToString().Contains(start));  //novi
+                Ellipse newElipse2 = ellipses.Find(x => x.ToolTip.ToString().Contains(end));
+                Ellipse oldElipse1 = ellipses.Find(x => x.ToolTip.ToString().Contains(helperA));  //stari
+                Ellipse oldElipse2 = ellipses.Find(x => x.ToolTip.ToString().Contains(helperB));
 
-                if (element == Element.Switch)
+                if (helperA == start && helperB == end)  //ako su isti kao malopre ugasi
                 {
-                    ee.Fill = Brushes.Black;
+                    if (newElipse1 != null)
+                    {
+                        newElipse1.Fill = colorStart;
+                        newElipse1.Stroke = Brushes.Black;
+                        newElipse1.StrokeThickness = 1;
+                    }
+                    if (newElipse2 != null)
+                    {
+                        newElipse2.Fill = colorEnd;
+                        newElipse2.Stroke = Brushes.Black;
+                        newElipse2.StrokeThickness = 1;
+                    }
+                    clicked = false;
                 }
-                if (element == Element.Node)
+                else
                 {
-                    ee.Fill = Brushes.Chocolate;
-                }
-                if (element == Element.Substation)
-                {
-                    ee.Fill = Brushes.Blue;
+                    if (oldElipse1 != null)
+                    {
+                        oldElipse1.Fill = colorStart;
+                        oldElipse1.Stroke = Brushes.Black;
+                        oldElipse1.StrokeThickness = 1;
+                        clicked = false;
+                    }
+                    if (oldElipse2 != null)
+                    {
+
+                        oldElipse2.Fill = colorEnd;
+                        oldElipse2.Stroke = Brushes.Black;
+                        oldElipse2.StrokeThickness = 1;
+                        clicked = false;
+                    }
+                    if (newElipse1 != null)
+                    {
+                        colorStart = (SolidColorBrush)newElipse1.Fill;
+                        newElipse1.Fill = Brushes.Yellow;
+                        newElipse1.Stroke = Brushes.Black;
+                        newElipse1.StrokeThickness = 2;
+                        clicked = true;
+                    }
+                    if (newElipse2 != null)
+                    {
+                        colorEnd = (SolidColorBrush)newElipse2.Fill;
+                        newElipse2.Fill = Brushes.Yellow;
+                        newElipse2.Stroke = Brushes.Black;
+                        newElipse2.StrokeThickness = 2;
+                        clicked = true;
+                    }
                 }
 
-                if (element1 == Element.Switch)
-                {
-                    ee1.Fill = Brushes.Black;
-                }
-                if (element1 == Element.Node)
-                {
-                    ee1.Fill = Brushes.Chocolate;
-                }
-                if (element1 == Element.Substation)
-                {
-                    ee1.Fill = Brushes.Blue;
-                }
-
-
-                canvas.Children.Remove(ee);
-                canvas.Children.Remove(ee1);
-
-                canvas.Children.Add(ee);
-                canvas.Children.Add(ee1);
-                clicked = false;
             }
 
         }
